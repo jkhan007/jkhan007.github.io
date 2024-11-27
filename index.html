@@ -1,48 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Web App 2.0</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telegram Web App </title>
+  <script async src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
-    <script async src="https://telegram.org/js/telegram-web-app.js"></script>
-
 <body>
-    <h1>Welcome to the Web App</h1>
+  <h1>Welcome to the Telegram Web App! v11</h1>
+  <div id="userInfo"></div>
+  
+  <script>
+    // Wait for the Telegram Web App SDK to load
+    if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
+      const initDataUnsafe = Telegram.WebApp.initDataUnsafe;
 
-    <script>
-        // Make sure the Telegram WebApp JavaScript SDK is available
-        if (window.Telegram.WebApp) {
-            // Initialize the WebApp SDK
-            const webApp = window.Telegram.WebApp;
+      if (initDataUnsafe && initDataUnsafe.user) {
+        const user = initDataUnsafe.user;
+        const userName = user.username || "No username";
+        const userFirstName = user.first_name || "No first name";
+        const userId = user.id;
 
-            // Access initDataUnsafe which contains user data
-            const userData = webApp.initDataUnsafe;
-
-            // Extract user info from initDataUnsafe
-            const userId = userData.user.id;
-            const userFirstName = userData.user.first_name;
-            const userLastName = userData.user.last_name;
-            const userUsername = userData.user.username;
-
-            // Log user info to console (you can display it on the page as well)
-            console.log(`User ID: ${userId}`);
-            console.log(`User First Name: ${userFirstName}`);
-            console.log(`User Last Name: ${userLastName}`);
-            console.log(`User Username: ${userUsername}`);
-
-            // Example: Display user info on the page
-            const userInfoDiv = document.createElement('div');
-            userInfoDiv.innerHTML = `
-                <p>User ID: ${userId}</p>
-                <p>First Name: ${userFirstName}</p>
-                <p>Last Name: ${userLastName || 'N/A'}</p>
-                <p>Username: ${userUsername || 'N/A'}</p>
-            `;
-            document.body.appendChild(userInfoDiv);
-        } else {
-            console.error("Telegram WebApp SDK is not available.");
-        }
-    </script>
+        // Display user details on the page
+        const userInfoDiv = document.getElementById("userInfo");
+        userInfoDiv.innerHTML = `
+          <p>Telegram ID: ${userId}</p>
+          <p>First Name: ${userFirstName}</p>
+          <p>Username: ${userName}</p>
+        `;
+      } else {
+        console.error("User information is not available.");
+      }
+    } else {
+      console.error("Telegram Web App SDK not initialized.");
+    }
+  </script>
 </body>
 </html>
