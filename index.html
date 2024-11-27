@@ -7,33 +7,39 @@
   <script async src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-  <h1>Welcome to the Telegram Web App! v11</h1>
+  <h1>Welcome to the Telegram Web App! v22</h1>
   <div id="userInfo"></div>
-  
+
   <script>
-    // Wait for the Telegram Web App SDK to load
-    if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-      const initDataUnsafe = Telegram.WebApp.initDataUnsafe;
+    // Wait for the Telegram Web App SDK to load and initialize
+    window.onload = function() {
+      if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
+        // Wait until the SDK is fully ready
+        Telegram.WebApp.ready();
 
-      if (initDataUnsafe && initDataUnsafe.user) {
-        const user = initDataUnsafe.user;
-        const userName = user.username || "No username";
-        const userFirstName = user.first_name || "No first name";
-        const userId = user.id;
+        // Now you can access the user information
+        const initDataUnsafe = Telegram.WebApp.initDataUnsafe;
 
-        // Display user details on the page
-        const userInfoDiv = document.getElementById("userInfo");
-        userInfoDiv.innerHTML = `
-          <p>Telegram ID: ${userId}</p>
-          <p>First Name: ${userFirstName}</p>
-          <p>Username: ${userName}</p>
-        `;
+        if (initDataUnsafe && initDataUnsafe.user) {
+          const user = initDataUnsafe.user;
+          const userName = user.username || "No username";
+          const userFirstName = user.first_name || "No first name";
+          const userId = user.id;
+
+          // Display user details on the page
+          const userInfoDiv = document.getElementById("userInfo");
+          userInfoDiv.innerHTML = `
+            <p>Telegram ID: ${userId}</p>
+            <p>First Name: ${userFirstName}</p>
+            <p>Username: ${userName}</p>
+          `;
+        } else {
+          console.error("User information is not available.");
+        }
       } else {
-        console.error("User information is not available.");
+        console.error("Telegram Web App SDK not initialized.");
       }
-    } else {
-      console.error("Telegram Web App SDK not initialized.");
-    }
+    };
   </script>
 </body>
 </html>
